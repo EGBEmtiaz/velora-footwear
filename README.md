@@ -1,5 +1,5 @@
 velora-footwear
 ├── package.json
-├── src/
+├── src
 ├── ...
 └── অন্যান্য project files
