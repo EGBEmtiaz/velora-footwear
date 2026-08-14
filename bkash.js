@@ -1,0 +1,7 @@
+import axios from "axios";
+export class BkashService {
+  constructor(env){this.base=env.BKASH_BASE_URL;this.appKey=env.BKASH_APP_KEY;this.appSecret=env.BKASH_APP_SECRET;this.username=env.BKASH_USERNAME;this.password=env.BKASH_PASSWORD;}
+  async token(){const r=await axios.post(`${this.base}/tokenized/checkout/token/grant`,{app_key:this.appKey,app_secret:this.appSecret},{headers:{"Content-Type":"application/json",Accept:"application/json",username:this.username,password:this.password},timeout:30000});if(!r.data?.id_token)throw new Error(r.data?.statusMessage||"bKash token request failed");return r.data.id_token;}
+  async create({amount,invoice,payerReference,callbackURL}){const token=await this.token();const r=await axios.post(`${this.base}/tokenized/checkout/create`,{mode:"0011",payerReference:payerReference||"01674102916",callbackURL,amount:Number(amount).toFixed(2),currency:"BDT",intent:"sale",merchantInvoiceNumber:invoice},{headers:{"Content-Type":"application/json",Accept:"application/json",authorization:token,"x-app-key":this.appKey},timeout:30000});if(!r.data?.paymentID||!r.data?.bkashURL)throw new Error(r.data?.statusMessage||"bKash payment creation failed");return r.data;}
+  async execute(paymentID){const token=await this.token();const r=await axios.post(`${this.base}/tokenized/checkout/execute`,{paymentID},{headers:{"Content-Type":"application/json",Accept:"application/json",authorization:token,"x-app-key":this.appKey},timeout:30000});return r.data;}
+}

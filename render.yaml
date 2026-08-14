@@ -1,0 +1,50 @@
+services:
+  - type: web
+    name: velora-footwear
+    runtime: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: PUBLIC_BASE_URL
+        sync: false
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: BKASH_SANDBOX
+        value: "false"
+      - key: BKASH_BASE_URL
+        sync: false
+      - key: BKASH_APP_KEY
+        sync: false
+      - key: BKASH_APP_SECRET
+        sync: false
+      - key: BKASH_USERNAME
+        sync: false
+      - key: BKASH_PASSWORD
+        sync: false
+      - key: BKASH_CALLBACK_PATH
+        value: /api/payments/bkash/callback
+      - key: NAGAD_SANDBOX
+        value: "false"
+      - key: NAGAD_MERCHANT_ID
+        sync: false
+      - key: NAGAD_MERCHANT_NUMBER
+        value: "01674102916"
+      - key: NAGAD_BASE_URL
+        sync: false
+      - key: NAGAD_CALLBACK_PATH
+        value: /api/payments/nagad/callback
